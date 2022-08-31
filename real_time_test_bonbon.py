@@ -1,4 +1,4 @@
-import wave
+
 import pyaudio
 import threading
 import time
@@ -12,7 +12,6 @@ from collections import deque
 import math
 record_second = 3
 
-global done
 
 class Listener:
     def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1, silence_threshold=2000):
@@ -30,7 +29,7 @@ class Listener:
                                   output=True,
                                   frames_per_buffer=self.chunk)
 
-    def listen(self, queue, prev_audio, done):
+    def listen(self, queue, prev_audio):
 
         # while True:
         #     data = self.stream.read(self.chunk, exception_on_overflow=True)
@@ -40,7 +39,6 @@ class Listener:
         #     time.sleep(0.01)
         while True:
 
-            done = False
             listen = True
             started = False
             rel = self.sample_rate / self.chunk
@@ -48,7 +46,7 @@ class Listener:
             # prev_audio = deque(maxlen=int(2 * rel))
             slid_window = deque(maxlen=int(self.silence_limit * rel))
 
-            while listen and done is False:
+            while listen:
                 data = self.stream.read(self.chunk, exception_on_overflow=True)
                 slid_window.append(math.sqrt(abs(audioop.avg(data, 4))))
 
