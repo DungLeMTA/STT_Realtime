@@ -14,7 +14,7 @@ record_second = 3
 
 global index
 class Listener:
-    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1.5, silence_threshold=3000):
+    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1.5, silence_threshold=2000):
         self.chunk = 1024
         self.sample_rate = sample_rate
         self.record_seconds = record_seconds
@@ -96,21 +96,21 @@ class SpeechRecognitionEngine:
         wf.close()
         return fname
 
-    def save_2(self, waveforms, prev,index):
-        fname = "sound_save/audio_temp_" + str(index) + ".wav"
-        index += 1
-        wf = wave.open(fname, "wb")
-        wf.setnchannels(1)
-        wf.setsampwidth(self.listener.p.get_sample_size(pyaudio.paInt16))
-        wf.setframerate(16000)
-        wf.writeframes(b''.join(list(prev)))
-        wf.writeframes(b''.join(waveforms))
-        wf.close()
-        return fname
+    # def save_2(self, waveforms, prev,index):
+    #     fname = "sound_save/audio_temp_" + str(index) + ".wav"
+    #     index += 1
+    #     wf = wave.open(fname, "wb")
+    #     wf.setnchannels(1)
+    #     wf.setsampwidth(self.listener.p.get_sample_size(pyaudio.paInt16))
+    #     wf.setframerate(16000)
+    #     wf.writeframes(b''.join(list(prev)))
+    #     wf.writeframes(b''.join(waveforms))
+    #     wf.close()
+    #     return fname
 
     def predict(self, audio,prev,index):
         with torch.no_grad():
-            fname_2 = self.save_2(audio,prev,index)
+            # fname_2 = self.save_2(audio,prev,index)
             fname = self.save(audio,prev)
             waveform, _ = torchaudio.load(fname)  # don't normalize on train
             # print(waveform)
