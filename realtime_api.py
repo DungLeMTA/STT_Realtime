@@ -14,7 +14,7 @@ record_second = 3
 
 global index
 class Listener:
-    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1, silence_threshold=1500):
+    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1, silence_threshold=2000):
         self.chunk = 1024
         self.sample_rate = sample_rate
         self.record_seconds = record_seconds
@@ -139,6 +139,7 @@ class SpeechRecognitionEngine:
                 action(self.predict(pred_q,pre,index))
                 index +=1
                 del pred_q
+                del pre
             time.sleep(record_second)
 
 
