@@ -12,6 +12,7 @@ from collections import deque
 import math
 record_second = 3
 
+global done
 
 class Listener:
     def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1, silence_threshold=2000):
@@ -29,7 +30,7 @@ class Listener:
                                   output=True,
                                   frames_per_buffer=self.chunk)
 
-    def listen(self, queue, prev_audio):
+    def listen(self, queue, prev_audio, done):
 
         # while True:
         #     data = self.stream.read(self.chunk, exception_on_overflow=True)
@@ -39,6 +40,7 @@ class Listener:
         #     time.sleep(0.01)
         while True:
 
+            done = False
             listen = True
             started = False
             rel = self.sample_rate / self.chunk
@@ -46,7 +48,7 @@ class Listener:
             # prev_audio = deque(maxlen=int(2 * rel))
             slid_window = deque(maxlen=int(self.silence_limit * rel))
 
-            while listen:
+            while listen and done is False:
                 data = self.stream.read(self.chunk, exception_on_overflow=True)
                 slid_window.append(math.sqrt(abs(audioop.avg(data, 4))))
 
@@ -151,7 +153,7 @@ class SpeechRecognitionEngine:
                 action(self.predict(pred_q, pre, index))
                 index += 1
                 del pred_q
-            time.sleep(record_second)
+                time.sleep(record_second)
 
     def run(self, action):
         self.listener.run(self.audio_q,self.prev,self.start)
@@ -170,15 +172,15 @@ class DemoAction:
         self.current_beam = results
         # print('asr: ',self.asr_results)
         # print('result: ',results)
-        trascript = self.asr_results+' '+results
-        # if results.strip() != '':
-        #     print(results)
-        # if current_context_length > 1 and results.strip() != '':
+        # trascript = self.asr_results+' '+results
         if results.strip() != '':
-            self.asr_results = trascript
-            print('ASR_RESULT: ',self.asr_results)
-            print('===========')
-            print('------------------')
+            print(results)
+        # if current_context_length > 1 and results.strip() != '':
+        # if results.strip() != '':
+        #     self.asr_results = trascript
+        #     print('ASR_RESULT: ',self.asr_results)
+        #     print('===========')
+        #     print('------------------')
 
 import os
 def Init(folder1):

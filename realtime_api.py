@@ -14,7 +14,7 @@ record_second = 3
 
 global index
 class Listener:
-    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1.5, silence_threshold=2000):
+    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 1, silence_threshold=1500):
         self.chunk = 1024
         self.sample_rate = sample_rate
         self.record_seconds = record_seconds
@@ -159,7 +159,7 @@ class DemoAction:
         self.current_beam = results
         # print('asr: ',self.asr_results)
         # print('result: ',results)
-        # trascript = self.asr_results+' '+results
+        trascript = self.asr_results+' '+results
         if results.strip() != '':
             print(results)
         # if current_context_length > 1 and results.strip() != '':
