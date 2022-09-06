@@ -16,7 +16,7 @@ from collections import deque
 # is detected, how much of previously recorded audio is
 # prepended. This helps to prevent chopping the beggining
 # of the phrase.
-from API_STT_TranDat import api_stt
+# from API_STT_TranDat import api_stt
 
 import os
 
@@ -29,10 +29,10 @@ def Init(folder1):
 
 def record_on_detect(file_name, silence_limit= 1, silence_threshold=2000, chunk=1024, rate=16000, prev_audio=0.5):
 
-
   index = 1
 
   while True:
+
     CHANNELS = 2
     FORMAT = pyaudio.paInt16
 
@@ -82,11 +82,9 @@ def record_on_detect(file_name, silence_limit= 1, silence_threshold=2000, chunk=
     wf.writeframes(b''.join(list(prev_audio)))
     wf.writeframes(b''.join(frames))
 
-
-
     index += 1
 
-  # wf.close()
+
 
 Init('./save_sound/')
 record_on_detect(file_name='example')
