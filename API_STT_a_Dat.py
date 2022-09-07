@@ -4,7 +4,7 @@ import requests
 
 url = "https://asr.hpda.vn/recog"
 
-payload={'language': '2'}
+payload={'language': '1'}
 
 headers = {}
 def api_stt():
