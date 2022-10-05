@@ -13,9 +13,11 @@ import math
 record_second = 7
 leng_record = record_second*16000/1024
 
+
+
 global index
 class Listener:
-    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 2, silence_threshold=1300):
+    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 2, silence_threshold=2000):
         self.chunk = 1024
         self.sample_rate = sample_rate
         self.record_seconds = record_seconds
@@ -53,7 +55,7 @@ class Listener:
 
                 if (sum([x > self.silence_threshold for x in slid_window]) > 0):
                     if (not started):
-                        print("Starting record of phrase " + str(self.index))
+                        # print("Starting record of phrase " + str(self.index))
                         self.index += 1
                         started = True
                         start = True
@@ -61,7 +63,7 @@ class Listener:
                     started = False
                     listen = False
                     start = False
-                    print("End record ")
+                    # print("End record ")
                     prev_audio = deque(maxlen=int(1 * rel))
 
                 if (started is True):
@@ -75,7 +77,7 @@ class Listener:
         print('\ Speech recognition engine is now listening...')
 
 class SpeechRecognitionEngine:
-    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 2, silence_threshold=1300):
+    def __init__(self, sample_rate=16000, record_seconds=6, silence_limit = 2, silence_threshold=2000):
         self.listener_save = Listener(sample_rate=16000)
 
         self.audio_q = list()
@@ -171,9 +173,9 @@ class SpeechRecognitionEngine:
                     # print(len(pred_q))
                     # print(len(pre))
                     self.audio_q.clear()
-                    action(self.predict(pred_q,pre,index))
+                    action(self.predict(pred_q, pre, index))
                     # print(len(slid_window))
-                    index +=1
+                    index += 1
                     del pred_q
                     del pre
                     # print("End record ")
